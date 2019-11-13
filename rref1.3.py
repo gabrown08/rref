@@ -1,10 +1,11 @@
-#rref
+#rref calculator
 #version 1.3, 11/12/2019
-#by Greg Brown
-#11/9/2019
+#Created by Greg Brown on 11/9/2019
 #practice for Daugherty University Assessment Day 11/15/2019
 
-#rref() function calculates the rref of a matrix.
+#use "A = randMatrix(m, n)" to generate a random m by n matrix of integers,
+#or just type the nested lists manually.
+#then enter "rref(A)" to display the rref of the matrix.
 
 #known bugs:
 #need error handling to ensure arguments in matrix generating functions are integers
@@ -18,7 +19,7 @@
 #   fixed 11/12/19
 #4. error if very first entry is 0 fixed 11/11/19 by adding first version of row-swapping
 
-#bugs 1, 2, 4 were fixed by allowing for a row-swapping, column-skipping pivot counter.
+#***bugs 1, 2, 4 were fixed by allowing for a row-swapping, column-skipping pivot counter.
 #This was completed on 11/12/2019.
 
 #import modules
@@ -138,25 +139,18 @@ def rref(a):
         #divide every entry in entire row by leading coefficient to create leading 1
         for h in range(len(a[0])):   
           a[i][h] = round(float(a[i][h]/b), 10)
-          #round -0.0 to 0
-          if a[i][h] == -0:
-            a[i][h] = 0
-          #round 1.0 to 1
-          if a[i][h] == 1.0:
-            a[i][h] = 1
+          #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
+          if a[i][h] == int(a[i][h]):
+            a[i][h] = int(a[i][h])
         #subtract leading coefficient of row times row with leading 1 from each row below row with leading 1
         for h in range(len(a)):
           if h > i:
             b = a[h][j]
             for k in range(len(a[0])):
               a[h][k] = round(float(a[h][k] - b*a[i][k]), 9)
-              #round -0 to 0
-              if a[h][k] == -0:
-                a[h][k] = 0
-              #round 1.0 to 1
-              if a[h][k] == 1.0:
-                a[h][k] = 1
-
+              #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
+              if a[h][k] == int(a[h][k]):
+                a[h][k] = int(a[h][k])
       #if pivot counter is at the last column, quit
       if j == len(a[0])-1:
         break
@@ -176,12 +170,9 @@ def rref(a):
               b = a[i-h-1][j]
               for k in range(len(a[0])):
                 a[i-h-1][k] = round(float(a[i-h-1][k] - b*a[i][k]), 9)
-                #round -0 to 0
-                if a[i-h-1][k] == -0:
-                  a[i-h-1][k] = 0
-                #round 1.0 to 1
-                if a[i-h-1][k] == 1:
-                  a[i-h-1][k] = 1
+                #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
+                if a[i-h-1][k] == int(a[i-h-1][k]):
+                  a[i-h-1][k] = int(a[i-h-1][k])
           break
       i -= 1
 
