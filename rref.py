@@ -23,6 +23,7 @@ def help():
   print('enter "rref(A)" to transform matrix A into reduced row echelon form')
   print('enter "display(A)" to display matrix A')
   print('enter "A" to print matrix A as a list of lists')
+  print('enter "exit()" to close the program')
   print()
   return
 
