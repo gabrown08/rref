@@ -232,6 +232,8 @@ if __name__ == '__main__':
   while True:
     try:
       exec(input(u"\u222B" + ' '))
+    except(SystemExit):
+      raise
     except:
       pass
 
@@ -243,7 +245,7 @@ if __name__ == '__main__':
 #make recursive determinant function and a matrix inverse calculator
 
 #TODO:
-#read and write matrices and from json and/or txt file in working directory
+#read and write matrices from json and/or txt file in working directory
 
 #TODO:
 #need error handling to ensure arguments in matrix generating functions are integers
