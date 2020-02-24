@@ -4,7 +4,7 @@
 #version 1.5, 1/29/2020
 
 #a linear algebra program and python module with functionality to generate random matrices, define user-submitted matrices,
-#transform a matrix into rref, and compute the product of matrices, and more
+#transform a matrix into rref, compute the product of matrices, and more
 
 #import modules
 import random
@@ -28,11 +28,9 @@ def help():
 
 #displays each nested list as a row
 def display(A):
-  for i in A:
-    print(i)
+  for row in A:
+    print(row)
   print()
-  #copy-pastable:
-  #print(A)
   return
 
 #generates a user defined integer matrix 
@@ -40,13 +38,13 @@ def userMatrix(m, n):
   #intial matrix A
   A = []
   #append each entry of matrix A
-  #input must be an integer
   for i in range(m):
     print("enter each entry for row " + str(i + 1) + ' of matrix:')
     row = []
     for j in range(n):
         entry = input()
-        while type(entry) != type(1):
+        #input must be an integer
+        while type(entry) != int:
             try:
                 entry = int(entry)
             except ValueError:
@@ -58,8 +56,8 @@ def userMatrix(m, n):
     print()
   #display matrix
   print('matrix =')
-  for i in A:
-    print(i)
+  for row in A:
+    print(row)
   print()
   return A
 
@@ -68,13 +66,13 @@ def realUserMatrix(m, n):
   #intial matrix A
   A = []
   #append each entry of matrix A
-  #input must be an integer
   for i in range(m):
     print("enter each entry for row " + str(i + 1) + ' of matrix:')
     row = []
     for j in range(n):
         entry = input()
-        while type(entry) != type(1.1):
+        #input must be an integer
+        while type(entry) != float:
             try:
                 entry = float(entry)
             except ValueError:
@@ -86,8 +84,8 @@ def realUserMatrix(m, n):
     print()
   #display matrix
   print('matrix =')
-  for i in A:
-    print(i)
+  for row in A:
+    print(row)
   print()
   return A
 
@@ -105,8 +103,8 @@ def randMatrix(m, n):
   A = [[random.randint(0, 9) for i in range(n)] for j in range(m)]
   #print random matrix
   #print('matrix =')
-  for i in A:
-    print(i)
+  for row in A:
+    print(row)
   print()
   return A
 
@@ -121,8 +119,8 @@ def transpose(A):
     for j in range(m):
       B[i][j] = A[j][i]
   #display transpose
-  for i in range(n):
-    print(B[i])
+  for row in B:
+    print(row)
   print()
   return B
 
@@ -145,8 +143,8 @@ def product(a, b):
   #calculate product of a and b by pairing rows in a with rows in b transpose (columns of b)
   product = [[sum([a * b for a, b in zip(a[i], B[j])]) for j in range(len(B))] for i in range(len(a))]
   #print product matrix
-  for i in product:
-    print(i)
+  for row in product:
+    print(row)
   print()
   return product
 
@@ -215,8 +213,8 @@ def rref(a):
           break
       i -= 1
   #print rref(matrix)
-  for i in a:
-    print(i)
+  for row in a:
+    print(row)
   print()
   return a
 
@@ -225,7 +223,7 @@ if __name__ == '__main__':
   print()
   print(' ', u"\u2588"*47)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
-  print(' ', u"\u2588"*2 + '   welcome to rref!' + '        by Greg Brown   ' + u"\u2588"*2)
+  print(' ', u"\u2588"*2 + '   welcome to rref!' + ' '*8 +'by Greg Brown   ' + u"\u2588"*2)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
   print(' ', u"\u2588"*2 + '   enter "help()" for a list of commands   ' + u"\u2588"*2)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
@@ -233,7 +231,7 @@ if __name__ == '__main__':
   print()
   while True:
     try:
-      exec(input(''))
+      exec(input(u"\u222B" + ' '))
     except:
       pass
 
