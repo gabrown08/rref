@@ -6,19 +6,15 @@
 #a linear algebra program and python module with functionality to generate random matrices, define user-submitted matrices,
 #transform a matrix into rref, and compute the product of matrices, and more
 
-#TODO:
-#create a class of objects called rational numbers, define operations using dunder methods, create rref algorithm for rational numbers
-#will require gcd function to reduce fractions
-
-#TODO:
-#need error handling to ensure arguments in matrix generating functions are integers
-
 #import modules
 import random
 import datetime
 
 #list of commands for the user
 def help():
+  print()
+  print('welcome to rref version 2.0, a linear algebra command line suite')
+  print()
   print('enter "A = randMatrix(m, n)" to store new random m by n matrix of integers as A')
   print('enter "A = userMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
   print('enter "A = realUserMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
@@ -227,10 +223,29 @@ def rref(a):
 #command prompt
 if __name__ == '__main__':
   print()
-  print(u"\u2588"*43)
-  print(u"\u2588" + '  welcome to rref!  ' + ' '*21 + u"\u2588")
-  print(u"\u2588" + '  enter "help()" for a list of commands  ' + u"\u2588")
-  print(u"\u2588"*43)
+  print(' ', u"\u2588"*47)
+  print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
+  print(' ', u"\u2588"*2 + '   welcome to rref!' + '        by Greg Brown   ' + u"\u2588"*2)
+  print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
+  print(' ', u"\u2588"*2 + '   enter "help()" for a list of commands   ' + u"\u2588"*2)
+  print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
+  print(' ', u"\u2588"*47)
   print()
-  while __name__ == '__main__':
-    exec(input(''))
+  while True:
+    try:
+      exec(input(''))
+    except:
+      pass
+
+#TODO:
+#create a class of objects called rational numbers, define operations using dunder methods, create rref algorithm for rational numbers
+#will require gcd function to reduce fractions
+
+#TODO:
+#make recursive determinant function and a matrix inverse calculator
+
+#TODO:
+#read and write matrices and from json and/or txt file in working directory
+
+#TODO:
+#need error handling to ensure arguments in matrix generating functions are integers
