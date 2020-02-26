@@ -22,7 +22,7 @@ def help():
   print('enter "T = transpose(A)" to store the transpose of matrix A as matrix T')
   print('enter "rref(A)" to transform matrix A into reduced row echelon form')
   print('enter "display(A)" to display matrix A')
-  print('enter "A" to print matrix A as a list of lists')
+  print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
   print()
   return
@@ -94,7 +94,9 @@ def realUserMatrix(m, n):
 def randMatrix(m, n):
   #use current time to randomize seed
   time = str(datetime.datetime.now())
-  seed = int(time[17:19] + time[14:16] + time[11:13] + time[8:10] + time[5:7] + time[0:4])
+  #print(time)
+  seed = int(time[20:26] + time[17:19] + time[14:16] + \
+        time[11:13] + time[8:10] + time[5:7] + time[0:4])
   random.seed(seed)
   #print seed
   #print()
