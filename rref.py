@@ -6,8 +6,8 @@
 #transform a matrix into rref, compute the product of matrices, and more
 
 #import modules
-import random
 import datetime
+import random
 
 #list of commands for the user
 def help():
@@ -41,18 +41,16 @@ def userMatrix(m, n):
   A = []
   #append each entry of matrix A
   for i in range(m):
-    print("enter each entry for row " + str(i + 1) + ' of matrix:')
+    print(f'enter each entry for row {str(i+1)} of matrix:')
     row = []
-    for j in range(n):
+    for _ in range(n):
       entry = input()
       #input must be an integer
       while type(entry) != int:
         try:
           entry = int(entry)
         except ValueError:
-          print()
-          print("error: the input was not an integer. enter an integer.")
-          entry = input()
+          entry = input("the input was not an integer. enter an integer: ")
       row.append(int(entry))
     A.append(row)
     print()
@@ -69,18 +67,16 @@ def realUserMatrix(m, n):
   A = []
   #append each entry of matrix A
   for i in range(m):
-    print("enter each entry for row " + str(i + 1) + ' of matrix:')
+    print(f'enter each entry for row {str(i+1)} of matrix:')
     row = []
-    for j in range(n):
+    for _ in range(n):
       entry = input()
       #input must be an integer
       while type(entry) != float:
         try:
           entry = float(entry)
         except ValueError:
-          print()
-          print("error: the input was not a number. enter a number.")
-          entry = input()
+          entry = input("the input was not an integer. enter an integer: ")
       row.append(entry)
     A.append(row)
     print()
@@ -96,8 +92,8 @@ def randMatrix(m, n, a=0, b=9):
   #use current time to randomize seed
   time = str(datetime.datetime.now())
   #print(time)
-  seed = int(time[20:26] + time[17:19] + time[14:16] + \
-        time[11:13] + time[8:10] + time[5:7] + time[0:4])
+  seed = int(time[20:26] + time[17:19] + time[14:16] \
+        + time[11:13] + time[8:10] + time[5:7] + time[0:4])
   random.seed(seed)
   #print seed
   #print()
@@ -253,4 +249,4 @@ if __name__ == '__main__':
 #read and write matrices from json and/or txt file in working directory
 
 #TODO:
-#need error handling to ensure arguments in matrix generating functions are integers
+#more error handling
