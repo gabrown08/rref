@@ -1,7 +1,6 @@
 #rref
 #Created by Greg Brown on 11/9/2019
 #version 2.0, 2/1/2020: added command prompt functionality
-#version 1.5, 1/29/2020
 
 #a linear algebra program and python module with functionality to generate random matrices, define user-submitted matrices,
 #transform a matrix into rref, compute the product of matrices, and more
@@ -13,9 +12,11 @@ import datetime
 #list of commands for the user
 def help():
   print()
-  print('welcome to rref version 2.0, a linear algebra command line suite')
+  print('welcome to rref version 2.0, a linear algebra command line suite.')
+  print('rref will execute python commands as well as the following rref-specific commands:')
   print()
-  print('enter "A = randMatrix(m, n)" to store new random m by n matrix of integers as A')
+  print('enter "A = randMatrix(m, n)" to store random m by n matrix of integers between 0 and 9 as A')
+  print('enter "A = randMatrix(m, n, a, b)" to store random m by n matrix of integers between a and b as A')
   print('enter "A = userMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
   print('enter "A = realUserMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
   print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
@@ -43,16 +44,16 @@ def userMatrix(m, n):
     print("enter each entry for row " + str(i + 1) + ' of matrix:')
     row = []
     for j in range(n):
-        entry = input()
-        #input must be an integer
-        while type(entry) != int:
-            try:
-                entry = int(entry)
-            except ValueError:
-                print()
-                print("error: the input was not an integer. enter an integer.")
-                entry = input()
-        row.append(int(entry))
+      entry = input()
+      #input must be an integer
+      while type(entry) != int:
+        try:
+          entry = int(entry)
+        except ValueError:
+          print()
+          print("error: the input was not an integer. enter an integer.")
+          entry = input()
+      row.append(int(entry))
     A.append(row)
     print()
   #display matrix
@@ -71,16 +72,16 @@ def realUserMatrix(m, n):
     print("enter each entry for row " + str(i + 1) + ' of matrix:')
     row = []
     for j in range(n):
-        entry = input()
-        #input must be an integer
-        while type(entry) != float:
-            try:
-                entry = float(entry)
-            except ValueError:
-                print()
-                print("error: the input was not a number. enter a number.")
-                entry = input()
-        row.append(entry)
+      entry = input()
+      #input must be an integer
+      while type(entry) != float:
+        try:
+          entry = float(entry)
+        except ValueError:
+          print()
+          print("error: the input was not a number. enter a number.")
+          entry = input()
+      row.append(entry)
     A.append(row)
     print()
   #display matrix
@@ -91,7 +92,7 @@ def realUserMatrix(m, n):
   return A
 
 #generate a matrix with random integer entries
-def randMatrix(m, n):
+def randMatrix(m, n, a=0, b=9):
   #use current time to randomize seed
   time = str(datetime.datetime.now())
   #print(time)
@@ -103,7 +104,7 @@ def randMatrix(m, n):
   #print('seed ', seed)
   #print()
   #generate a list of lists (matrix) with random integer entries
-  A = [[random.randint(0, 9) for i in range(n)] for j in range(m)]
+  A = [[random.randint(a, b) for i in range(n)] for j in range(m)]
   #print random matrix
   #print('matrix =')
   for row in A:
@@ -144,7 +145,7 @@ def product(a, b):
 	  for j in range(n):
 		  B[i][j] = b[j][i]				
   #calculate product of a and b by pairing rows in a with rows in b transpose (columns of b)
-  product = [[sum([a * b for a, b in zip(a[i], B[j])]) for j in range(len(B))] for i in range(len(a))]
+  product = [[sum([a*b for a, b in zip(a[i], B[j])]) for j in range(len(B))] for i in range(len(a))]
   #print product matrix
   for row in product:
     print(row)
@@ -158,7 +159,8 @@ def rref(a):
   #the forward phase:
   #gaussian-elimination
   for i in range(len(a)):
-      #if leading term is 0, swap the row with the next non-zero row, if no non zero leading term in rest of column, move pivot counter to next column and try again.
+      #if leading term is 0, swap the row with the next non-zero row.
+      #if no non-zero leading term in rest of column, move pivot counter to next column and try again.
       while a[i][j] == 0:
         for I in range(len(a)-i):
           if a[i+I][j] != 0:
