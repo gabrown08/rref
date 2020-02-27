@@ -13,18 +13,25 @@ import random
 def help():
   print()
   print('welcome to rref version 2.0, a linear algebra command line suite.')
+  print()
   print('rref will execute python commands as well as the following rref-specific commands:')
   print()
+  print('enter "I = identity(n)" to store the nxn identity matrix as I')
   print('enter "A = randMatrix(m, n)" to store random m by n matrix of integers between 0 and 9 as A')
   print('enter "A = randMatrix(m, n, a, b)" to store random m by n matrix of integers between a and b as A')
   print('enter "A = userMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
   print('enter "A = realUserMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
-  print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
   print('enter "T = transpose(A)" to store the transpose of matrix A as matrix T')
-  print('enter "rref(A)" to transform matrix A into reduced row echelon form')
+  print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
+  print('enter "R = rref(A)" to store the reduced row echelon form of matrix A as matrix R')
+  print('enter "B = inverse(A)" to store the inverse of matrix A as B')
   print('enter "display(A)" to display matrix A')
   print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
+  print()
+  print('note: arguments a, b, m, n above must be integers and arguments A and B must be matrices.')
+  print()
+  print('rref was created by Greg Brown')
   print()
   return
 
@@ -56,9 +63,7 @@ def userMatrix(m, n):
     print()
   #display matrix
   print('matrix =')
-  for row in A:
-    print(row)
-  print()
+  display(A)
   return A
 
 #generates a user defined real matrix 
@@ -82,9 +87,7 @@ def realUserMatrix(m, n):
     print()
   #display matrix
   print('matrix =')
-  for row in A:
-    print(row)
-  print()
+  display(A)
   return A
 
 #generate a matrix with random integer entries
@@ -103,10 +106,23 @@ def randMatrix(m, n, a=0, b=9):
   A = [[random.randint(a, b) for i in range(n)] for j in range(m)]
   #print random matrix
   #print('matrix =')
-  for row in A:
-    print(row)
-  print()
+  display(A)
   return A
+
+#generate nxn identity matrix
+def identity(n):
+  #initiate matrix
+  I = [[] for i in range(n)]
+  #insert 1's along main diagonal and 0's everywhere else
+  for i in range(n):
+    for j in range(n):
+      if i == j:
+        I[i].append(1)
+      elif i != j:
+        I[i].append(0)
+  #display nxn identity matrix
+  display(I)
+  return I
 
 #return the tranpose of given matrix
 def transpose(A):
@@ -119,9 +135,7 @@ def transpose(A):
     for j in range(m):
       B[i][j] = A[j][i]
   #display transpose
-  for row in B:
-    print(row)
-  print()
+  display(B)
   return B
 
 #calculates the product of two matrices
@@ -143,13 +157,13 @@ def product(a, b):
   #calculate product of a and b by pairing rows in a with rows in b transpose (columns of b)
   product = [[sum([a*b for a, b in zip(a[i], B[j])]) for j in range(len(B))] for i in range(len(a))]
   #print product matrix
-  for row in product:
-    print(row)
-  print()
+  display(product)
   return product
 
 #transform matrix into reduced row echelon form
-def rref(a):
+def rref(A):
+  #copy matrix A before transformations begin in order to preserve matrix A
+  a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
   #initiate pivot counter
   j = 0
   #the forward phase:
@@ -214,17 +228,36 @@ def rref(a):
           break
       i -= 1
   #print rref(matrix)
-  for row in a:
-    print(row)
-  print()
+  display(a)
   return a
+
+#calculates the inverse of a matrix
+def inverse(A):
+  #copy matrix A before transformations begin in order to preserve matrix A
+  a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
+  #join matrix A with identity matrix to form augmented matrix
+  for i in range(len(A)):
+    for j in range(len(A[i])):
+      if i == j:
+        a[i].append(1)
+      elif i != j:
+        a[i].append(0)
+  #display augmented matrix
+  display(a)
+  #rref augmented matrix
+  R = rref(a)
+  #store solution to rref as new matrix
+  inverse = [row[len(A):] for row in R]
+  #print inverse matrix
+  display(inverse)
+  return inverse
 
 #command prompt
 if __name__ == '__main__':
   print()
   print(' ', u"\u2588"*47)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
-  print(' ', u"\u2588"*2 + '   welcome to rref!' + ' '*8 +'by Greg Brown   ' + u"\u2588"*2)
+  print(' ', u"\u2588"*2 + '   welcome to rref!' + ' '*24 + u"\u2588"*2)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
   print(' ', u"\u2588"*2 + '   enter "help()" for a list of commands   ' + u"\u2588"*2)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
@@ -233,7 +266,7 @@ if __name__ == '__main__':
   while True:
     try:
       exec(input(u"\u222B" + ' '))
-    except(SystemExit):
+    except(SystemExit, KeyboardInterrupt):
       raise
     except:
       pass
@@ -243,10 +276,7 @@ if __name__ == '__main__':
 #will require gcd function to reduce fractions
 
 #TODO:
-#make recursive determinant function and a matrix inverse calculator
+#make recursive determinant calculator
 
 #TODO:
 #read and write matrices from json and/or txt file in working directory
-
-#TODO:
-#more error handling
