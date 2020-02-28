@@ -20,8 +20,8 @@ def help():
   print('enter "I = identity(n)" to store the nxn identity matrix as I')
   print('enter "A = randMatrix(m, n)" to store random m by n matrix of integers between 0 and 9 as A')
   print('enter "A = randMatrix(m, n, a, b)" to store random m by n matrix of integers between a and b as A')
-  print('enter "A = userMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
-  print('enter "A = realUserMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
+  print('enter "A = intMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
+  print('enter "A = floatMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
   print('enter "T = transpose(A)" to store the transpose of matrix A as matrix T')
   print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
   print('enter "R = rref(A)" to store the reduced row echelon form of matrix A as matrix R')
@@ -49,12 +49,15 @@ def matrix(m, n):
   A = []
   #append each entry of matrix A
   for i in range(m):
-    print(f'enter each entry as "integer/integer" for row {str(i+1)} of matrix:')
+    print(f'enter each entry as "integer/integer" or just "integer" for row {str(i+1)} of matrix:')
     row = []
     for _ in range(n):
       entry = input()
       entry = entry.split('/')
-      ratio = Rational(int(entry[0]),int(entry[1]))
+      if len(entry) == 1:
+        ratio = Rational(int(entry[0]))
+      if len(entry) == 2:
+        ratio = Rational(int(entry[0]),int(entry[1]))
       row.append(ratio)
     A.append(row)
     print()
@@ -64,7 +67,7 @@ def matrix(m, n):
   return A
 
 #generates a user defined integer matrix 
-def userMatrix(m, n):
+def intMatrix(m, n):
   #intial matrix A
   A = []
   #append each entry of matrix A
@@ -88,7 +91,7 @@ def userMatrix(m, n):
   return A
 
 #generates a user defined real matrix 
-def realUserMatrix(m, n):
+def floatMatrix(m, n):
   #intial matrix A
   A = []
   #append each entry of matrix A
@@ -166,17 +169,10 @@ def product(a, b):
     print('multiplication undefined. dimensions mismatch.')
     print()
     return
-  #store number of columns of each matrix
-  n = len(a[0])
-  p = len(b[0])
-  #generate blank matrix for b transpose
-  B = [[0 for i in range(n)] for j in range(p)]
-  #generate b transpose
-  for i in range(p):
-	  for j in range(n):
-		  B[i][j] = b[j][i]				
+  #store b transpose as B
+  B = transpose(b)
   #calculate product of a and b by pairing rows in a with rows in b transpose (columns of b)
-  product = [[sum([a*b for a, b in zip(a[i], B[j])]) for j in range(len(B))] for i in range(len(a))]
+  product = [[sum(a*b for a, b in zip(a[i], B[j])) for j in range(len(B))] for i in range(len(a))]
   #print product matrix
   display(product)
   return product

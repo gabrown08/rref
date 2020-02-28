@@ -4,7 +4,7 @@ from math import gcd
 class Rational:
     def __init__(self, num=0, denom=1):
         if type(num) is not int or type(denom) is not int:
-            print("arguments must be integers or floats. numerator set to 0 and denominator set to 1.")
+            print("arguments must be integers. numerator set to 0 and denominator set to 1.")
             self.numerator = 0
             self.denominator = 1
         else:
