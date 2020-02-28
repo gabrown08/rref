@@ -1,4 +1,4 @@
-from math import gcd as GCD
+from math import gcd
 
 #rational number class definiton
 class Rational:
@@ -12,8 +12,8 @@ class Rational:
             self.denominator = denom
         
     def reduced(self):
-        gcd = GCD(self.numerator, self.denominator)
-        reduced = Rational(int(self.numerator/gcd), int(self.denominator/gcd))
+        GCD = gcd(self.numerator, self.denominator)
+        reduced = Rational(int(self.numerator/GCD), int(self.denominator/GCD))
         return reduced
 
     def __str__(self):
@@ -29,6 +29,12 @@ class Rational:
     def __add__(self, other):
         return(Rational(self.numerator*other.denominator+self.denominator*other.numerator,
                             self.denominator*other.denominator).reduced())
+
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
 
     def __sub__(self, other):
         return(Rational(self.numerator*other.denominator-self.denominator*other.numerator,
@@ -51,6 +57,8 @@ if __name__ == "__main__":
     print(f'{number3} - {number4} = {number3-number4}')
     print(f'{number3} * {number4} = {number3*number4}')
     print(f'{number3} / {number4} = {number3/number4}')
-    print(GCD(number1.numerator, number1.denominator))
+    print(gcd(number1.numerator, number1.denominator))
     print(Rational(2,1).reduced())
     print(Rational(0, 50))
+
+    print(sum([number1, number2, number3, number4]))

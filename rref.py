@@ -6,6 +6,7 @@
 #transform a matrix into rref, compute the product of matrices, and more
 
 #import modules
+from rationals import *
 import datetime
 import random
 
@@ -41,6 +42,26 @@ def display(A):
     print(row)
   print()
   return
+  
+#generates a user defined rational matrix 
+def matrix(m, n):
+  #intial matrix A
+  A = []
+  #append each entry of matrix A
+  for i in range(m):
+    print(f'enter each entry as "integer/integer" for row {str(i+1)} of matrix:')
+    row = []
+    for _ in range(n):
+      entry = input()
+      entry = entry.split('/')
+      ratio = Rational(int(entry[0]),int(entry[1]))
+      row.append(ratio)
+    A.append(row)
+    print()
+  #display matrix
+  print('matrix =')
+  display(A)
+  return A
 
 #generates a user defined integer matrix 
 def userMatrix(m, n):
@@ -272,8 +293,7 @@ if __name__ == '__main__':
       pass
 
 #TODO:
-#create a class of objects called rational numbers, define operations using dunder methods, create rref algorithm for rational numbers
-#will require gcd function to reduce fractions
+#create/modify rref algorithm for rational numbers
 
 #TODO:
 #make recursive determinant calculator
