@@ -31,6 +31,9 @@ class Rational:
         if self.denominator == 1 or self.numerator == 0:
             return f'{self.numerator}'
         return f'{self.numerator}/{self.denominator}'
+
+    def __len__(self):
+        return 1
     
     def __eq__(self, other):
         if type(other) == int:

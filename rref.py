@@ -14,31 +14,34 @@ import random
 #list of commands for the user
 def help():
   print()
-  print('welcome to rref version 2.0, a linear algebra command line suite.')
-  print()
   print('rref will execute python commands as well as the following rref-specific commands:')
   print()
+  print('matrix generating functions:')
   print('enter "I = identity(n)" to store the nxn identity matrix as I')
-  print('enter "A = Matrix(m, n)" to store random m by n matrix of rationals as A')
+  print('enter "A = matrix(m, n) to store random m by n matrix of rational whole numbers as A')
+  print('enter "A = matrix(m, n, a, b, c, d)" to store random m by n matrix of rationals\n\
+  whose numerators range from a to b and denominator ranges from c to d as A')
   print('enter "A = randMatrix(m, n)" to store random m by n matrix of integers between 0 and 9 as A')
   print('enter "A = randMatrix(m, n, a, b)" to store random m by n matrix of integers between a and b as A')
-  print('enter "A = matrix(m,n)" to store a user-submitted m by n matrix of rationals as A')
+  print('enter "A = rationalMatrix(m,n)" to store a user-submitted m by n matrix of rationals as A')
   print('enter "A = intMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
   print('enter "A = floatMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
+  print('matrix operations:')  
   print('enter "T = transpose(A)" to store the transpose of matrix A as matrix T')
   print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
   print('enter "R = rref(A)" to store the reduced row echelon form of matrix of ints or floats A as matrix R (decimal approximations)')
   print('enter "R = rref2(A)" to store reduced row echelon form of matrix of rationals A as R (rational approximations)')
-  print('enter "B = inverse(A)" to store the inverse of matrix A as B')
-  print('enter "B = inverse2(A)" to store the inverse of matrix of rationals A as B')
+  print('enter "B = inverse(A)" to store the inverse of matrix A as B (for ints and floats only)')
+  print('enter "B = inverse2(A)" to store the inverse of matrix of rationals A as B (for rationals only)')
+  print('other commands:')
   print('enter "display(A)" to display matrix A')
   print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
   print()
-  print('note: arguments a, b, m, n above must be integers and arguments A and B must be matrices.')
+  print('note: arguments a, b, c, d, m, n above must be integers and arguments A and B must be matrices.')
   print()
   print('note: due to undetermined limitations, the accuracy of rref2 decreases the bigger the rational numbers denominators get')
-  print('      as well as when the size of the matrix increases. When this occurs, the output is still a somewhat accurate approximation.')
+  print('  as well as when the size of the matrix increases. When this occurs, the output is still a somewhat accurate approximation.')
   print()
   print('rref was created by Greg Brown')
   print()
@@ -52,7 +55,7 @@ def display(A):
   return
   
 #generates a user defined rational matrix 
-def matrix(m, n):
+def rationalMatrix(m, n):
   #intial matrix A
   A = []
   #append each entry of matrix A
@@ -142,10 +145,9 @@ def randMatrix(m, n, a=0, b=9):
   return A
 
 #generate a matrix with random integer entries
-def Matrix(m, n, a=0, b=9, c=1, d=9):
+def matrix(m, n, a=0, b=9, c=1, d=1):
   #use current time to randomize seed
   time = str(datetime.datetime.now())
-  #print(time)
   seed = int(time[20:26] + time[17:19] + time[14:16] \
         + time[11:13] + time[8:10] + time[5:7] + time[0:4])
   random.seed(seed)
@@ -208,6 +210,8 @@ def product(a, b):
   return product
 
 #transform matrix into reduced row echelon form
+#this function will yield decimal approximation
+#this function will only work for matrices whose entries are of class int or float
 def rref(A):
   #copy matrix A before transformations begin in order to preserve matrix A
   a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
@@ -279,6 +283,8 @@ def rref(A):
   return a
 
 #transform matrix into reduced row echelon form
+#this function will yield a rational number approximation
+#this function only works for matrices whose entries are of the class Rational
 def rref2(A):
   #copy matrix A before transformations begin in order to preserve matrix A
   a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
@@ -310,21 +316,12 @@ def rref2(A):
         #divide every entry in entire row by leading coefficient to create leading 1
         for h in range(len(a[0])):   
           a[i][h] = a[i][h]/b
-          if not isinstance(a[i][h], Rational):
-            a[i][h] = round(a[i][h], 9)
-            #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
-            if a[i][h] == int(a[i][h]):
-              a[i][h] = int(a[i][h])
         #subtract leading coefficient of row times row with leading 1 from entire row for each row below row with leading 1
         for h in range(len(a)):
           if h > i:
             b = a[h][j]
             for k in range(len(a[0])):
               a[h][k] = a[h][k] - b*a[i][k]
-              if not isinstance(a[h][k], Rational):
-                a[h][k] = round(a[h][k], 9)
-                if a[h][k] == int(a[h][k]):
-                  a[h][k] = int(a[h][k])
       #if pivot counter is at the last column, quit. otherwise, continue finding pivots.
       if j == len(a[0])-1:
         break
@@ -343,11 +340,6 @@ def rref2(A):
               b = a[i-h-1][j]
               for k in range(len(a[0])):
                 a[i-h-1][k] = a[i-h-1][k] - b*a[i][k]
-                if not isinstance(a[i-h-1][k], Rational):
-                  a[i-h-1][k] = round(a[i-h-1][k], 9)
-                #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
-                  if a[i-h-1][k] == int(a[i-h-1][k]):
-                    a[i-h-1][k] = int(a[i-h-1][k])
           break
       i -= 1
   #print rref(matrix)
@@ -355,6 +347,8 @@ def rref2(A):
   return a
 
 #calculates the inverse of a matrix
+#this function will yield decimal approximation
+#this function will only work for matrices whose entries are of class int or float
 def inverse(A):
   #copy matrix A before transformations begin in order to preserve matrix A
   a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
@@ -375,7 +369,9 @@ def inverse(A):
   display(inverse)
   return inverse
 
-  #calculates the inverse of a matrix
+#calculates the inverse of a matrix
+#this function will yield a rational number approximation
+#this function only works for matrices whose entries are of the class Rational
 def inverse2(A):
   #copy matrix A before transformations begin in order to preserve matrix A
   a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
@@ -412,11 +408,8 @@ if __name__ == '__main__':
       exec(input(u"\u222B" + ' '))
     except(SystemExit, KeyboardInterrupt):
       raise
-    #except:
-    #  pass
-
-#TODO:
-#create/modify rref algorithm for rational numbers
+    except:
+      pass
 
 #TODO:
 #make recursive determinant calculator
