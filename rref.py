@@ -13,37 +13,41 @@ import random
 
 #list of commands for the user
 def help():
+  print('  ' + u"\u2588"*82)
+  print('  rref will execute python commands as well as the following rref-specific commands:')
+  print('  ' + u"\u2588"*82)
   print()
-  print('rref will execute python commands as well as the following rref-specific commands:')
-  print()
-  print('matrix generating functions:')
+  print(u"\u2588"*2 + 'matrix generating functions:')
   print('enter "I = identity(n)" to store the nxn identity matrix as I')
   print('enter "A = matrix(m, n) to store random m by n matrix of rational whole numbers as A')
   print('enter "A = matrix(m, n, a, b, c, d)" to store random m by n matrix of rationals\n\
-  whose numerators range from a to b and denominator ranges from c to d as A')
+whose numerators range from a to b and denominator ranges from c to d as A')
   print('enter "A = randMatrix(m, n)" to store random m by n matrix of integers between 0 and 9 as A')
   print('enter "A = randMatrix(m, n, a, b)" to store random m by n matrix of integers between a and b as A')
   print('enter "A = rationalMatrix(m,n)" to store a user-submitted m by n matrix of rationals as A')
   print('enter "A = intMatrix(m, n)" to store user-submitted m by n matrix of integers as A')
   print('enter "A = floatMatrix(m, n)" to store user-submitted m by n matrix of floats as A')
-  print('matrix operations:')  
+  print()
+  print(u"\u2588"*2 + 'matrix operations:')  
   print('enter "T = transpose(A)" to store the transpose of matrix A as matrix T')
   print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
   print('enter "R = rref(A)" to store the reduced row echelon form of matrix of ints or floats A as matrix R (decimal approximations)')
   print('enter "R = rref2(A)" to store reduced row echelon form of matrix of rationals A as R (rational approximations)')
   print('enter "B = inverse(A)" to store the inverse of matrix A as B (for ints and floats only)')
   print('enter "B = inverse2(A)" to store the inverse of matrix of rationals A as B (for rationals only)')
-  print('other commands:')
+  print()
+  print(u"\u2588"*2 + 'other commands:')
   print('enter "display(A)" to display matrix A')
   print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
   print()
-  print('note: arguments a, b, c, d, m, n above must be integers and arguments A and B must be matrices.')
+  print(u"\u2588"*2 + 'note: arguments a, b, c, d, m, n above must be integers and arguments A and B must be matrices.')
   print()
-  print('note: due to undetermined limitations, the accuracy of rref2 decreases the bigger the rational numbers denominators get')
-  print('  as well as when the size of the matrix increases. When this occurs, the output is still a somewhat accurate approximation.')
+  print(u"\u2588"*2 + 'note: when numerators and/or denominators surpass 14 digits, calculations are accurate up to 14 decimal places.')
   print()
-  print('rref was created by Greg Brown')
+  print('  ' + u"\u2588"*30)
+  print('  rref was created by Greg Brown')
+  print('  ' + u"\u2588"*30)
   print()
   return
 
@@ -242,7 +246,7 @@ def rref(A):
         b = a[i][j]
         #divide every entry in entire row by leading coefficient to create leading 1
         for h in range(len(a[0])):   
-          a[i][h] = round(float(a[i][h]/b), 10)
+          a[i][h] = round(float(a[i][h]/b), 11)
           #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
           if a[i][h] == int(a[i][h]):
             a[i][h] = int(a[i][h])
@@ -251,7 +255,7 @@ def rref(A):
           if h > i:
             b = a[h][j]
             for k in range(len(a[0])):
-              a[h][k] = round(float(a[h][k] - b*a[i][k]), 9)
+              a[h][k] = round(float(a[h][k] - b*a[i][k]), 11)
               #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
               if a[h][k] == int(a[h][k]):
                 a[h][k] = int(a[h][k])
@@ -272,7 +276,7 @@ def rref(A):
             if h < i:
               b = a[i-h-1][j]
               for k in range(len(a[0])):
-                a[i-h-1][k] = round(float(a[i-h-1][k] - b*a[i][k]), 9)
+                a[i-h-1][k] = round(float(a[i-h-1][k] - b*a[i][k]), 11)
                 #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
                 if a[i-h-1][k] == int(a[i-h-1][k]):
                   a[i-h-1][k] = int(a[i-h-1][k])
@@ -360,7 +364,7 @@ def inverse(A):
       elif i != j:
         a[i].append(0)
   #display augmented matrix
-  display(a)
+  #display(a)
   #rref augmented matrix
   R = rref(a)
   #store solution to rref as new matrix
@@ -383,7 +387,7 @@ def inverse2(A):
       elif i != j:
         a[i].append(Rational(0))
   #display augmented matrix
-  display(a)
+  #display(a)
   #rref augmented matrix
   R = rref2(a)
   #store solution to rref as new matrix
