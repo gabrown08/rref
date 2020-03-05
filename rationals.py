@@ -12,6 +12,7 @@ class Rational:
         else:
             self.numerator = num
             self.denominator = denom
+            self.reduced()
         
     # define how Rationals are printed 
     def __str__(self):
@@ -93,7 +94,7 @@ class Rational:
     # reduce Rational
     def reduced(self):
         GCD = gcd(self.numerator, self.denominator)
-        if GCD != 0:
+        if GCD > 1:
             self.numerator = int(self.numerator/GCD)
             self.denominator = int(self.denominator/GCD)
         if self.denominator < 0:

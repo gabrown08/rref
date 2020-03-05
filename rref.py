@@ -38,6 +38,7 @@ whose numerators range from a to b and denominator ranges from c to d as A')
   print()
   print(u"\u2588"*2 + 'other commands:')
   print('enter "display(A)" to display matrix A')
+  print('enter "rounded(A)" to round the entires in matrix A to integers')  
   print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
   print()
@@ -57,6 +58,14 @@ def display(A):
     print(row)
   print()
   return
+
+#round entries with scientific notation and .999999999
+def rounded(A):
+  for i in range(len(A)):
+    for j in range(len(A[0])):
+      A[i][j] = round(A[i][j])
+  display(A)
+  return A
   
 #generates a user defined rational matrix 
 def rationalMatrix(m, n):
@@ -148,7 +157,7 @@ def randMatrix(m, n, a=0, b=9):
   display(A)
   return A
 
-#generate a matrix with random integer entries
+#generate a matrix with random rational entries
 def matrix(m, n, a=0, b=9, c=1, d=1):
   #use current time to randomize seed
   time = str(datetime.datetime.now())
@@ -156,7 +165,7 @@ def matrix(m, n, a=0, b=9, c=1, d=1):
         + time[11:13] + time[8:10] + time[5:7] + time[0:4])
   random.seed(seed)
   #generate a list of lists (matrix) with rational entries
-  A = [[Rational(random.randint(a, b), random.randint(c,d)).reduced() for i in range(n)] for j in range(m)]
+  A = [[Rational(random.randint(a, b), random.randint(c,d)) for i in range(n)] for j in range(m)]
   #print random matrix
   #print('matrix =')
   display(A)
@@ -246,7 +255,7 @@ def rref(A):
         b = a[i][j]
         #divide every entry in entire row by leading coefficient to create leading 1
         for h in range(len(a[0])):   
-          a[i][h] = round(float(a[i][h]/b), 11)
+          a[i][h] = float(a[i][h]/b)
           #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
           if a[i][h] == int(a[i][h]):
             a[i][h] = int(a[i][h])
@@ -255,7 +264,7 @@ def rref(A):
           if h > i:
             b = a[h][j]
             for k in range(len(a[0])):
-              a[h][k] = round(float(a[h][k] - b*a[i][k]), 11)
+              a[h][k] = float(a[h][k] - b*a[i][k])
               #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
               if a[h][k] == int(a[h][k]):
                 a[h][k] = int(a[h][k])
@@ -276,7 +285,7 @@ def rref(A):
             if h < i:
               b = a[i-h-1][j]
               for k in range(len(a[0])):
-                a[i-h-1][k] = round(float(a[i-h-1][k] - b*a[i][k]), 11)
+                a[i-h-1][k] = float(a[i-h-1][k] - b*a[i][k])
                 #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
                 if a[i-h-1][k] == int(a[i-h-1][k]):
                   a[i-h-1][k] = int(a[i-h-1][k])
