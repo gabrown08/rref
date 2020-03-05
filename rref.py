@@ -1,5 +1,6 @@
 #rref
 #Created by Greg Brown on 11/9/2019
+#version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
 #version 2.5, 2/29/2020: added support for rational numbers
 #version 2.0, 2/1/2020: added command prompt functionality
 
@@ -31,14 +32,12 @@ whose numerators range from a to b and denominator ranges from c to d as A')
   print(u"\u2588"*2 + 'matrix operations:')  
   print('enter "T = transpose(A)" to store the transpose of matrix A as matrix T')
   print('enter "P = product(A, B)" to store the product of stored matrices A and B as new matrix P')
-  print('enter "R = rref(A)" to store the reduced row echelon form of matrix of ints or floats A as matrix R (decimal approximations)')
-  print('enter "R = rref2(A)" to store reduced row echelon form of matrix of rationals A as R (rational approximations)')
-  print('enter "B = inverse(A)" to store the inverse of matrix A as B (for ints and floats only)')
-  print('enter "B = inverse2(A)" to store the inverse of matrix of rationals A as B (for rationals only)')
+  print('enter "R = rref(A)" to store the reduced row echelon form of matrix A as matrix R')
+  print('enter "B = inverse(A)" to store the inverse of matrix A as B')
   print()
   print(u"\u2588"*2 + 'other commands:')
   print('enter "display(A)" to display matrix A')
-  print('enter "rounded(A)" to round the entires in matrix A to integers')  
+  print('enter "rounded(A)" to round the float entires in matrix A to integers')  
   print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
   print()
@@ -222,9 +221,9 @@ def product(a, b):
   display(product)
   return product
 
-#transform matrix into reduced row echelon form
-#this function will yield decimal approximation
-#this function will only work for matrices whose entries are of class int or float
+#calculate the reduced row echelon form of a matrix
+#this function will yield decimal approximation if the type of entries are ints are floats,
+#and reduced fractions if the entries of the matrix are rational
 def rref(A):
   #copy matrix A before transformations begin in order to preserve matrix A
   a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
@@ -255,86 +254,21 @@ def rref(A):
         b = a[i][j]
         #divide every entry in entire row by leading coefficient to create leading 1
         for h in range(len(a[0])):   
-          a[i][h] = float(a[i][h]/b)
-          #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
-          if a[i][h] == int(a[i][h]):
-            a[i][h] = int(a[i][h])
-        #subtract leading coefficient of row times row with leading 1 from entire row for each row below row with leading 1
-        for h in range(len(a)):
-          if h > i:
-            b = a[h][j]
-            for k in range(len(a[0])):
-              a[h][k] = float(a[h][k] - b*a[i][k])
-              #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
-              if a[h][k] == int(a[h][k]):
-                a[h][k] = int(a[h][k])
-      #if pivot counter is at the last column, quit. otherwise, continue finding pivots.
-      if j == len(a[0])-1:
-        break
-      else:
-        j += 1
-  #the backward phase:
-  #back-substitution
-  while i >= 0:
-      #starting on the last row, find the leading 1, and turn every term above it into 0
-      for J in range(j+1):
-        if a[i][J] == 1:
-          j = J
-          #subtract the entry above pivot point times the entire pivot row from every row
-          for h in range(len(a)):
-            if h < i:
-              b = a[i-h-1][j]
-              for k in range(len(a[0])):
-                a[i-h-1][k] = float(a[i-h-1][k] - b*a[i][k])
-                #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
-                if a[i-h-1][k] == int(a[i-h-1][k]):
-                  a[i-h-1][k] = int(a[i-h-1][k])
-          break
-      i -= 1
-  #print rref(matrix)
-  display(a)
-  return a
-
-#transform matrix into reduced row echelon form
-#this function will yield a rational number approximation
-#this function only works for matrices whose entries are of the class Rational
-def rref2(A):
-  #copy matrix A before transformations begin in order to preserve matrix A
-  a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
-  #initiate pivot counter
-  j = 0
-  #the forward phase:
-  #gaussian-elimination
-  for i in range(len(a)):
-      #if leading term is 0, swap the row with the next non-zero row.
-      #if no non-zero leading term in rest of column, move pivot counter to next column and try again.
-      while a[i][j] == 0:
-        for I in range(len(a)-i):
-          if a[i+I][j] != 0:
-            rowSwap = a[i]
-            a[i] = a[i+I]
-            a[i+I] = rowSwap
-            break
-        #if found nonzero leading term in loop, quit and move to next part
-        if a[i][j] != 0:
-          break
-        # if arrive at last column, quit
-        if j == len(a[0])-1:
-          break
-        j += 1
-      #if leading term is not 0, turn it into 1, then turn every number below it into 0
-      if a[i][j] != 0:
-        #let the leading coefficient of the row remain constant as b
-        b = a[i][j]
-        #divide every entry in entire row by leading coefficient to create leading 1
-        for h in range(len(a[0])):   
           a[i][h] = a[i][h]/b
+          #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
+          if type(a[i][h]) is float:
+            if a[i][h] == int(a[i][h]):
+              a[i][h] = int(a[i][h])
         #subtract leading coefficient of row times row with leading 1 from entire row for each row below row with leading 1
         for h in range(len(a)):
           if h > i:
             b = a[h][j]
             for k in range(len(a[0])):
               a[h][k] = a[h][k] - b*a[i][k]
+              #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
+              if type(a[h][k]) is float:
+                if a[h][k] == int(a[h][k]):
+                  a[h][k] = int(a[h][k])
       #if pivot counter is at the last column, quit. otherwise, continue finding pivots.
       if j == len(a[0])-1:
         break
@@ -353,6 +287,10 @@ def rref2(A):
               b = a[i-h-1][j]
               for k in range(len(a[0])):
                 a[i-h-1][k] = a[i-h-1][k] - b*a[i][k]
+                #round -0.0 to 0, 1.0 to 1, 2.0 to 2, etc.
+                if type(a[i-h-1][k]) is float:
+                  if a[i-h-1][k] == int(a[i-h-1][k]):
+                    a[i-h-1][k] = int(a[i-h-1][k])
           break
       i -= 1
   #print rref(matrix)
@@ -360,8 +298,8 @@ def rref2(A):
   return a
 
 #calculates the inverse of a matrix
-#this function will yield decimal approximation
-#this function will only work for matrices whose entries are of class int or float
+#this function will yield decimal approximation if the type of entries are ints are floats,
+#and reduced fractions if the entries of the matrix are rational
 def inverse(A):
   #copy matrix A before transformations begin in order to preserve matrix A
   a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
@@ -376,29 +314,6 @@ def inverse(A):
   #display(a)
   #rref augmented matrix
   R = rref(a)
-  #store solution to rref as new matrix
-  inverse = [row[len(A):] for row in R]
-  #print inverse matrix
-  display(inverse)
-  return inverse
-
-#calculates the inverse of a matrix
-#this function will yield a rational number approximation
-#this function only works for matrices whose entries are of the class Rational
-def inverse2(A):
-  #copy matrix A before transformations begin in order to preserve matrix A
-  a = [[A[i][j] for j in range(len(A[i]))] for i in range(len(A))]
-  #join matrix A with identity matrix to form augmented matrix
-  for i in range(len(A)):
-    for j in range(len(A[i])):
-      if i == j:
-        a[i].append(Rational(1))
-      elif i != j:
-        a[i].append(Rational(0))
-  #display augmented matrix
-  #display(a)
-  #rref augmented matrix
-  R = rref2(a)
   #store solution to rref as new matrix
   inverse = [row[len(A):] for row in R]
   #print inverse matrix
@@ -422,6 +337,7 @@ if __name__ == '__main__':
     except(SystemExit, KeyboardInterrupt):
       raise
     except:
+      print('error. try again.')
       pass
 
 #TODO:
