@@ -1,5 +1,6 @@
 #rref
 #Created by Greg Brown on 11/9/2019
+#verseion 2.7, 3/8/2020: accuracy of rationals with large components fixed
 #version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
 #version 2.5, 2/29/2020: added support for rational numbers
 #version 2.0, 2/1/2020: added command prompt functionality
@@ -8,7 +9,7 @@
 #transform a matrix into rref, compute the product of matrices, and more
 
 #import modules
-from rationals import *
+from rationals import Rational
 import datetime
 import random
 
@@ -37,13 +38,11 @@ whose numerators range from a to b and denominator ranges from c to d as A')
   print()
   print(u"\u2588"*2 + 'other commands:')
   print('enter "display(A)" to display matrix A')
-  print('enter "rounded(A)" to round the float entires in matrix A to integers')  
+  print('enter "rounded(A)" to round the float or rational entries in matrix A to the nearest integer')  
   print('enter "print(A)" to print matrix A as a list of lists')
   print('enter "exit()" to close the program')
   print()
   print(u"\u2588"*2 + 'note: arguments a, b, c, d, m, n above must be integers and arguments A and B must be matrices.')
-  print()
-  print(u"\u2588"*2 + 'note: when numerators and/or denominators surpass 14 digits, calculations are accurate up to 14 decimal places.')
   print()
   print('  ' + u"\u2588"*30)
   print('  rref was created by Greg Brown')
@@ -338,10 +337,11 @@ if __name__ == '__main__':
       raise
     except:
       print('error. try again.')
+      print()
       pass
 
-#TODO:
-#make recursive determinant calculator
+#TODO:make recursive determinant calculator
 
-#TODO:
-#read and write matrices from json and/or txt file in working directory
+#TODO:read and write matrices from json and/or txt file in working directory
+
+#TODO:class of matrices

@@ -7,23 +7,23 @@ class Rational:
     def __init__(self, num=0, denom=1):
         if type(num) is not int or type(denom) is not int:
             print("arguments must be integers. numerator set to 0 and denominator set to 1.")
+            print()
             self.numerator = 0
             self.denominator = 1
         else:
             self.numerator = num
             self.denominator = denom
+            self.decimal = self.numerator/self.denominator
             self.reduced()
         
     # define how Rationals are printed 
     def __str__(self):
-        self.reduced()
         if self.denominator == 1 or self.numerator == 0:
             return f'{self.numerator}'
         return f'{self.numerator}/{self.denominator}'
 
     # define how Rationals are printed in lists
     def __repr__(self):
-        self.reduced()
         if self.denominator == 1 or self.numerator == 0:
             return f'{self.numerator}'
         return f'{self.numerator}/{self.denominator}'
@@ -91,12 +91,16 @@ class Rational:
             other = Rational(other)
         return other.__truediv__(self)
 
+    # define rounding to the nearest whole number
+    def __round__(self):
+        return round(self.decimal)
+
     # reduce Rational
     def reduced(self):
         GCD = gcd(self.numerator, self.denominator)
         if GCD > 1:
-            self.numerator = int(self.numerator/GCD)
-            self.denominator = int(self.denominator/GCD)
+            self.numerator = self.numerator//GCD
+            self.denominator = self.denominator//GCD
         if self.denominator < 0:
             self.numerator *= -1
             self.denominator *= -1
