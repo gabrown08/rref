@@ -1,6 +1,6 @@
 #rref
 #Created by Greg Brown on 11/9/2019
-#verseion 2.7, 3/8/2020: accuracy of rationals with large components fixed
+#version 2.7, 3/8/2020: accuracy of rationals with large components fixed
 #version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
 #version 2.5, 2/29/2020: added support for rational numbers
 #version 2.0, 2/1/2020: added command prompt functionality
@@ -77,10 +77,13 @@ def rationalMatrix(m, n):
     for _ in range(n):
       entry = input()
       entry = entry.split('/')
-      if len(entry) == 1:
-        ratio = Rational(int(entry[0]))
-      if len(entry) == 2:
-        ratio = Rational(int(entry[0]),int(entry[1]))
+      try:
+        if len(entry) == 1:
+          ratio = Rational(int(entry[0]))
+        elif len(entry) > 1:
+          ratio = Rational(int(entry[0]),int(entry[1]))
+      except:
+        ratio = Rational()
       row.append(ratio)
     A.append(row)
     print()

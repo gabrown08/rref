@@ -24,9 +24,7 @@ class Rational:
 
     # define how Rationals are printed in lists
     def __repr__(self):
-        if self.denominator == 1 or self.numerator == 0:
-            return f'{self.numerator}'
-        return f'{self.numerator}/{self.denominator}'
+        return self.__str__()
 
     # define length of a Rational
     def __len__(self):
@@ -149,3 +147,5 @@ if __name__ == "__main__":
     print(number5)
     number5.reduced()
     print(number5)
+
+    print(number5.decimal)
