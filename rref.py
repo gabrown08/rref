@@ -1,17 +1,26 @@
 #rref
+
 #Created by Greg Brown on 11/9/2019
+#version 2.8, 3/14/2020: added ability to save matrices to hard drive and load them into program
 #version 2.7, 3/8/2020: accuracy of rationals with large components fixed
 #version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
 #version 2.5, 2/29/2020: added support for rational numbers
 #version 2.0, 2/1/2020: added command prompt functionality
 
 #a linear algebra program and python module with functionality to generate random matrices, define user-submitted matrices,
-#transform a matrix into rref, compute the product of matrices, and more
+#transform a matrix into rref, compute the product of matrices, and more.
+
+#TODO:make recursive determinant calculator
+
+#TODO:class of matrices
+
+#TODO:ability to save Rationals to database
 
 #import modules
 from rationals import Rational
 import datetime
 import random
+import json
 
 #list of commands for the user
 def help():
@@ -43,7 +52,14 @@ def help():
   print('  enter "print(A)" to print matrix A as a list of lists')
   print('  enter "exit()" to close the program')
   print()
-  print(u"\u2588"*2 + 'note: arguments a, b, c, d, m, n above must be integers and arguments A and B must be matrices.')
+  print(u"\u2588"*2 + 'saving matrices:')
+  print('  enter "save(A, matrixname, filename)" to save matrix matrixname to file filename in working directory')
+  print('  enter "load(matrixname, filename) to load matrix matrixname from file filename')
+  print('  enter "database(filename)" display all contents of database filename')
+  print()
+  print(u"\u2588"*2 + 'note: arguments a, b, c, d, m, n above must be integers, arguments A and B must be matrices,\n\
+    and arguments matrixname and filename must be strings')
+  print(u"\u2588"*2 + 'note: matrixname defaults to "untitled" and filename defaults to "matrix_database.json"')
   print()
   print('  ' + u"\u2588"*30)
   print('  rref was created by Greg Brown')
@@ -65,7 +81,59 @@ def rounded(A):
       A[i][j] = round(A[i][j])
   display(A)
   return A
-  
+
+#save matrix to json file
+def save(A, matrix_name='untitled', file_name='matrix_database.json'):
+  try:
+    with open(file_name, 'r') as f:
+      data = json.loads(f.read())
+    try:
+      data[matrix_name]
+      print(f'matrix "{matrix_name}" already stored.')
+    except:
+      data[matrix_name] = A
+      with open(file_name, 'w') as f:
+        f.write(str(json.dumps(data)))    
+      print(f'matrix "{matrix_name}" saved in "{file_name}".')
+  except:
+    data = {matrix_name:A}
+    with open(file_name, 'w') as f:
+      f.write(str(json.dumps(data)))
+    print(f'matrix "{matrix_name}" saved in "{file_name}".')
+  print()
+  return
+
+#load matrix in database into program
+def load(matrix_name='untitled', file_name='matrix_database.json'):
+  try:
+    with open(file_name, 'r') as f:
+      data = json.loads(f.read())
+    try:
+      A = data[matrix_name]
+      display(A)
+      return A
+    except:
+      print(f'matrix "{matrix_name}" does not exist in "{file_name}"')
+  except:
+    print(f'{file_name} does not exist in working directory')
+  print()
+  return
+
+#display all entries in database
+def database(file_name='matrix_database.json'):
+  try:
+    with open(file_name, 'r') as f:
+      data = json.loads(f.read())
+    for key in data.keys():
+      print(key)
+      display(data[key])
+      print()
+    return data
+  except:
+    print(f'{file_name} does not exist in working directory')
+    print()
+    return
+
 #generates a user defined rational matrix 
 def rationalMatrix(m, n):
   #intial matrix A
@@ -343,9 +411,3 @@ if __name__ == '__main__':
       print('error. try again.')
       print()
       pass
-
-#TODO:make recursive determinant calculator
-
-#TODO:read and write matrices from json and/or txt file in working directory
-
-#TODO:class of matrices
