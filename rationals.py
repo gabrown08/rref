@@ -106,8 +106,9 @@ class Rational:
             self.denominator *= -1
         return self
 
+#testing
 if __name__ == "__main__":
-    #testing
+    #test cases
     number1 = Rational(8.2351342,.134523)
     number2 = Rational(50,70)
     print(f'{number1} + {number2} = {number1+number2}')
