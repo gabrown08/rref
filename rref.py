@@ -47,8 +47,9 @@ def help():
   print('  enter "B = inverse(A)" to store the inverse of matrix A as B')
   print()
   print(u"\u2588"*2 + 'other commands:')
-  print('  enter "display(A)" to display matrix A')
-  print('  enter "rounded(A)" to round the float or rational entries in matrix A to the nearest integer')  
+  print('  enter "rounded(A)" to round the float or rational entries in matrix A to the nearest integer') 
+  print('  enter "floated(A)" to convert rational entries of A into decimal approximations')
+  print('  enter "display(A)" to display matrix A') 
   print('  enter "print(A)" to print matrix A as a list of lists')
   print('  enter "exit()" to close the program')
   print()
@@ -79,6 +80,14 @@ def rounded(A):
   for i in range(len(A)):
     for j in range(len(A[0])):
       A[i][j] = round(A[i][j])
+  display(A)
+  return A
+
+#convert rational entries to floats
+def floated(A):
+  for i in range(len(A)):
+    for j in range(len(A[0])):
+      A[i][j] = A[i][j].decimal
   display(A)
   return A
 
@@ -130,7 +139,7 @@ def database(file_name='matrix_database.json'):
       print()
     return data
   except:
-    print(f'{file_name} does not exist in working directory')
+    print(f'"{file_name}" does not exist in working directory')
     print()
     return
 
@@ -237,7 +246,6 @@ def matrix(m, n, a=0, b=9, c=1, d=1):
   #generate a list of lists (matrix) with rational entries
   A = [[Rational(random.randint(a, b), random.randint(c,d)) for i in range(n)] for j in range(m)]
   #print random matrix
-  #print('matrix =')
   display(A)
   return A
 
@@ -364,8 +372,9 @@ def rref(A):
                     a[i-h-1][k] = int(a[i-h-1][k])
           break
       i -= 1
-  #print rref(matrix)
-  display(a)
+  #print rref(matrix) only if the user did not call inverse function
+  if 'inverse' not in COMMAND:
+    display(a)
   return a
 
 #calculates the inverse of a matrix
@@ -381,8 +390,6 @@ def inverse(A):
         a[i].append(1)
       elif i != j:
         a[i].append(0)
-  #display augmented matrix
-  #display(a)
   #rref augmented matrix
   R = rref(a)
   #store solution to rref as new matrix
@@ -404,7 +411,7 @@ if __name__ == '__main__':
   print()
   while True:
     try:
-      exec(input(u"\u222B" + ' '))
+      exec(COMMAND:=input(u"\u222B" + ' '))
     except(SystemExit, KeyboardInterrupt):
       raise
     except:
