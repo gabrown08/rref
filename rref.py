@@ -2,13 +2,7 @@
 #Created by Greg Brown on 11/9/2019
 
 #a linear algebra program and python module with functionality to generate random matrices, define user-submitted matrices,
-#transform a matrix into rref, compute the product of matrices, and more.
-
-#TODO:make recursive determinant calculator
-
-#TODO:create class of matrix objects and define operations as class methods
-
-#TODO:ability to save Rationals to database
+#transform a matrix into rref, compute the inverse of a non-singular matrix, compute the product of matrices, and more.
 
 #import modules
 from rationals import Rational
@@ -413,3 +407,9 @@ if __name__ == '__main__':
 #version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
 #version 2.5, 2/29/2020: added support for rational numbers
 #version 2.0, 2/1/2020: added command prompt functionality
+
+#TODO:make recursive determinant calculator
+
+#TODO:create class of matrix objects and define operations as class methods
+
+#TODO:ability to save Rationals to database
