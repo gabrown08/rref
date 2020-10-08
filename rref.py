@@ -1,18 +1,12 @@
 #rref
-
 #Created by Greg Brown on 11/9/2019
-#version 2.8, 3/14/2020: added ability to save matrices to hard drive and load them into program
-#version 2.7, 3/8/2020: accuracy of rationals with large components fixed
-#version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
-#version 2.5, 2/29/2020: added support for rational numbers
-#version 2.0, 2/1/2020: added command prompt functionality
 
 #a linear algebra program and python module with functionality to generate random matrices, define user-submitted matrices,
 #transform a matrix into rref, compute the product of matrices, and more.
 
 #TODO:make recursive determinant calculator
 
-#TODO:class of matrices
+#TODO:create class of matrix objects and define operations as class methods
 
 #TODO:ability to save Rationals to database
 
@@ -124,8 +118,7 @@ def load(matrix_name='untitled', file_name='matrix_database.json'):
     except:
       print(f'matrix "{matrix_name}" does not exist in "{file_name}"')
   except:
-    print(f'{file_name} does not exist in working directory')
-  print()
+    print(f'{file_name} does not exist in working directory\n')
   return
 
 #display all entries in database
@@ -139,8 +132,7 @@ def database(file_name='matrix_database.json'):
       print()
     return data
   except:
-    print(f'"{file_name}" does not exist in working directory')
-    print()
+    print(f'"{file_name}" does not exist in working directory\n')
     return
 
 #generates a user defined rational matrix 
@@ -282,8 +274,7 @@ def transpose(A):
 def product(a, b):
   #check if multiplication is defined
   if len(a[0]) != len(b):
-    print('multiplication undefined. dimensions mismatch.')
-    print()
+    print('multiplication undefined. dimensions mismatch.\n')
     return
   #store b transpose as B
   m = len(b)
@@ -400,21 +391,25 @@ def inverse(A):
 
 #command prompt
 if __name__ == '__main__':
-  print()
-  print(' ', u"\u2588"*47)
+  print('\n ', u"\u2588"*47)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
   print(' ', u"\u2588"*2 + '   welcome to rref!' + ' '*24 + u"\u2588"*2)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
   print(' ', u"\u2588"*2 + '   enter "help()" for a list of commands   ' + u"\u2588"*2)
   print(' ', u"\u2588"*2 + ' '*43 + u"\u2588"*2)
-  print(' ', u"\u2588"*47)
-  print()
+  print(' ', u"\u2588"*47 + '\n')
   while True:
     try:
       exec(COMMAND:=input(u"\u222B" + ' '))
     except(SystemExit, KeyboardInterrupt):
       raise
-    except:
-      print('error. try again.')
-      print()
-      pass
+    except Exception as e:
+      print('error: ', e, '\ntry again.\n')
+
+      
+#Created by Greg Brown on 11/9/2019
+#version 2.8, 3/14/2020: added ability to save matrices to hard drive and load them into program
+#version 2.7, 3/8/2020: accuracy of rationals with large components fixed
+#version 2.6, 3/5/2020: rref and inverse work for rationals and ints/floats
+#version 2.5, 2/29/2020: added support for rational numbers
+#version 2.0, 2/1/2020: added command prompt functionality
