@@ -383,6 +383,10 @@ def inverse(A):
   display(inverse)
   return inverse
 
+
+#initial command needed for importing
+COMMAND = ''
+
 #command prompt
 if __name__ == '__main__':
   print('\n ', u"\u2588"*47)
